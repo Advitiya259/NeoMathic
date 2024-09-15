@@ -4,8 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+
+    <style>
+        textarea {
+            width: 500px;
+            height: 300px;
+            font-family: monospace;
+        }
+    </style>
+
 </head>
 <body>
-    Hello world !
+    <label for="console">Console</label>
+    <br>
+    <textarea id="console" readonly spellcheck="false"></textarea>
+
+    <script src="script.js"></script>
+    <script>
+        const textarea = document.getElementById('console');
+        let consoleContent = 'Welcome to the console!\n> ';  
+
+
+        textarea.value = consoleContent;
+        textarea.readOnly = false; 
+
+        const currentPos = textarea.selectionStart;
+
+        textarea.addEventListener('keydown', (event) => {
+            const currentPos = textarea.selectionStart;
+
+            if (currentPos < consoleContent.length) {
+                event.preventDefault();
+                return;
+            }
+
+            if (event.key === 'Enter') {
+                event.preventDefault(); 
+
+                const lastPromptIndex = consoleContent.lastIndexOf('> ') + 2;
+                const userInput = textarea.value.substring(lastPromptIndex).trim();
+                
+                consoleContent += textarea.value.substring(consoleContent.length) + `\n ${evalFunc(userInput)} \n> `; 
+                textarea.value = consoleContent; 
+
+                textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+
+
+            }
+        });
+    </script>
 </body>
 </html>
